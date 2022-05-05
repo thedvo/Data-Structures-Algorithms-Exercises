@@ -1,7 +1,7 @@
 /**
 indRotatedIndex
  
-Write a function called findRotatedIndex which accepts a rotated array of sorted numbers and an integer. The function should return the index of num in the array. If the value is not found, return -1.
+Write a function called findRotatedIndex which accepts a rotated array of sorted targetbers and an integer. The function should return the index of target in the array. If the value is not found, return -1.
 
 Constraints:
 
@@ -15,51 +15,46 @@ findRotatedIndex([6, 7, 8, 9, 1, 2, 3, 4], 3) // 6
 findRotatedIndex([37,44,66,102,10,22],14) // -1
 findRotatedIndex([6, 7, 8, 9, 1, 2, 3, 4], 12) // -1 */
 
-function binarySearch(arr, target, low = 0, high = arr.length - 1) {
-	if (high < low) return -1;
-
-	let mid = Math.floor((low + high) / 2);
-	if (target === arr[mid]) return mid;
-
-	if (key > arr[mid]) return binarySearch(arr, target, mid + 1, high);
-
-	return binarySearch(arr, low, mid - 1, key);
+function findRotatedIndex(array, target) {
+	let pivot = findPivot(array);
+	if (pivot > 0 && target >= array[0] && target <= array[pivot - 1]) {
+		return binarySearch(array, target, 0, pivot - 1);
+	} else {
+		return binarySearch(array, target, pivot, array.length - 1);
+	}
 }
 
-/* Function to get pivot.*/
-function findPivot(arr, low, high) {
-	// base cases
-	if (high < low) return -1;
-	if (high === low) return low;
+function binarySearch(array, target, start, end) {
+	if (array.length === 0) return -1;
+	if (target < array[start] || target > array[end]) return -1;
 
-	let mid = Math.floor((low + high) / 2);
-
-	// works with larger values in array
-	if (mid < high && arr[mid] > arr[mid + 1]) return mid;
-	if (mid > low && arr[mid] < arr[mid - 1]) return mid - 1;
-
-	// works with smaller values in array
-	if (arr[low] >= arr[mid]) return findPivot(arr, low, mid - 1);
-	return findPivot(arr, mid + 1, high);
+	while (start <= end) {
+		let mid = Math.floor((start + end) / 2);
+		if (array[mid] === target) {
+			return mid;
+		} else if (target < array[mid]) {
+			end = mid - 1;
+		} else {
+			start = mid + 1;
+		}
+	}
+	return -1;
 }
 
-function pivotedBinarySearch(arr, n, key) {
-	let pivot = findPivot(arr, 0, n - 1);
-
-	// If we didn't find a pivot,
-	// then array is not rotated at all
-	if (pivot == -1)
-		return binarySearch(arr, (low = 0), (high = arr.length - 1), target);
-
-	// If we found a pivot, then first compare with pivot
-	// and then search in two subarrays around pivot
-	if (arr[pivot] == target) return pivot;
-
-	if (arr[0] <= target) return binarySearch(arr, 0, pivot - 1, target);
-
-	return binarySearch(arr, pivot + 1, (high = arr.length - 1), target);
+function findPivot(arr) {
+	if (arr.length === 1 || arr[0] < arr[arr.length - 1]) return 0;
+	let start = 0;
+	let end = arr.length - 1;
+	while (start <= end) {
+		let mid = Math.floor((start + end) / 2);
+		if (arr[mid] > arr[mid + 1]) return mid + 1;
+		else if (arr[start] <= arr[mid]) {
+			start = mid + 1;
+		} else {
+			end = mid - 1;
+		}
+	}
 }
-
 // // linear search
 // function findRotatedIndex(arr, target) {;
 // 	for (let i = 0; i < arr.length; i++) {

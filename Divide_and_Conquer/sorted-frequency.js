@@ -14,7 +14,7 @@ sortedFrequency([1,1,2,2,2,2,3],4) // -1 */
 
 // binary search
 
-function frequencyCounter(arr, target) {
+function sortedFrequency(arr, target) {
 	let first = findFirst(arr, target);
 	if (first === -1) return first;
 	let last = findLast(arr, target);
@@ -51,7 +51,7 @@ function findLast(arr, target, low = 0, high = arr.length - 1) {
 		return findLast(arr, target, mid + 1, high);
 	}
 	return -1;
-} 
+}
 
 // // linear search
 // function sortedFrequency(arr, target) {
