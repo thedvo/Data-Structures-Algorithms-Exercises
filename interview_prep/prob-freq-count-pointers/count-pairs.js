@@ -18,7 +18,7 @@
 
 // or
 
-// Time Complexity - O(N)
+// Time Complexity - O(N)  
 
 function countPairs(arr, num) {
 	// sort array values in ascending order
